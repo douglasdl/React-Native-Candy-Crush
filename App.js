@@ -80,6 +80,23 @@ export default function App() {
         }
     }
 
+
+    const moveIntoSquareBelow = () => {
+        for (let i = 0; i < width * width - width; i++) {
+            const firstRow = [0, 1, 2, 3, 4, 5, 6, 7];
+            const isFirstRow = firstRow.includes(i);
+
+            if(isFirstRow && currentColorArrangement[i] === 'rgba(0, 0, 0, 0)') {
+                let randomNumber = Math.floor(Math.random() * candyColors.length);
+                currentColorArrangement[i] = candyColors[randomNumber];
+            }
+            if(currentColorArrangement[i +  width] === 'rgba(0, 0, 0, 0)') {
+                currentColorArrangement[i + width] = currentColorArrangement[i];
+                currentColorArrangement[i] = 'rgba(0, 0, 0, 0)';
+            }
+        }
+    }
+
     
     const createBoard = () => {
         const randomColorArrangement = [];
@@ -101,6 +118,7 @@ export default function App() {
             checkForRowOfFour();
             checkForColumnOfThree();
             checkForRowOfThree();
+            moveIntoSquareBelow();
             setCurrentColorArrangement([...currentColorArrangement]);
         }, 100)
         return () => clearInterval(timer);
@@ -145,6 +163,7 @@ const styles = StyleSheet.create({
         width: windowWidth,
         height: windowWidth,
         display: 'flex',
+        flexDirection: 'row',
         flexWrap: 'wrap',
         borderColor: '#EEEEEE',
         borderWidth: 1,
